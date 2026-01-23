@@ -1,8 +1,11 @@
+import Gifts from '@/components/Gift/Gifts'
 import React from 'react'
 
 function GiftCard() {
   return (
-    <div>GiftCard</div>
+    <>
+    <Gifts/>
+    </>
   )
 }
 

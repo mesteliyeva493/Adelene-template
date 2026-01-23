@@ -12,7 +12,6 @@ function Succes  ()  {
         transition={{ duration: 0.6 }}
         className="max-w-md w-full text-center space-y-10"
       >
-        {/* ICON ANIMATION */}
         <motion.div 
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -30,7 +29,6 @@ function Succes  ()  {
           </div>
         </motion.div>
         
-        {/* TEXT CONTENT */}
         <div className="space-y-4">
           <h1 className="text-5xl font-serif italic text-gray-800">Thank you!</h1>
           <p className="text-gray-500 uppercase tracking-[3px] text-[11px] font-medium leading-relaxed">
@@ -38,7 +36,6 @@ function Succes  ()  {
           </p>
         </div>
 
-        {/* DETAILS BOX */}
         <div className="bg-[#FBFBFB] p-8 rounded-[40px] border border-gray-50 space-y-3">
           <p className="text-[10px] text-gray-400 uppercase tracking-[1.5px]">
             Order Confirmation
@@ -48,7 +45,6 @@ function Succes  ()  {
           </p>
         </div>
 
-        {/* BUTTON */}
         <div className="pt-4">
           <Link 
             to="/shopAll" 
@@ -58,7 +54,6 @@ function Succes  ()  {
           </Link>
         </div>
 
-        {/* FOOTER NOTE */}
         <p className="text-[9px] text-gray-300 uppercase tracking-[2px] pt-10">
           Adelene — Curated Style & Quality
         </p>

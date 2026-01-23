@@ -10,6 +10,7 @@ const user_router = require("./Routes/user.router");
 const order_router = require("./Routes/order.router");
 const payment_router = require("./Routes/payment.router");
 const mail_router = require("./Routes/mail.router");
+const gift_router = require("./Routes/gift.router");
 
 app.use(cors());
 const PORT = 5050;
@@ -22,6 +23,7 @@ app.use('/users', user_router);
 app.use("/orders", order_router);
 app.use("/api", payment_router);
 app.use("/api",mail_router)
+app.use("/giftcards", gift_router);
 mongoose
   .connect(
     "mongodb+srv://mesteliyeva004:Mesteliyeva493.@products.3aodwgi.mongodb.net/"

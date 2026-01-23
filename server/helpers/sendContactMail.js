@@ -1,22 +1,20 @@
 const nodemailer = require('nodemailer');
 
 const sendContactMail = async (senderEmail, subject, content) => {
-    // 1. "Poçtalyon"u (Transporter) yaradırıq
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 465,
-        secure: true, // 465 portu üçün true olmalıdır
+        secure: true, 
         auth: {
-            user: process.env.EMAIL__USERNAME, // .env-dəki emailin
-            pass: process.env.EMAIL__PASSWORD, // .env-dəki 16 rəqəmli App Password
+            user: process.env.EMAIL__USERNAME, 
+            pass: process.env.EMAIL__PASSWORD, 
         },
     });
 
-    // 2. Emailin məzmununu hazırlayırıq
     const mailOptions = {
-        from: `"Adalene Store" <${process.env.EMAIL__USERNAME}>`, // Göndərən hissədə saytın adı görünsün
-        to: process.env.EMAIL__USERNAME, // Mesaj sənə gəlsin
-        replyTo: senderEmail, // Sən "Reply" basanda birbaşa müştəriyə cavab getsin
+        from: `"Adalene Store" <${process.env.EMAIL__USERNAME}>`,
+        to: process.env.EMAIL__USERNAME, 
+        replyTo: senderEmail, 
         subject: `Adalene Contact: ${subject}`,
         html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; border: 1px solid #ddd; padding: 20px; border-radius: 10px;">
@@ -34,7 +32,6 @@ const sendContactMail = async (senderEmail, subject, content) => {
         `,
     };
 
-    // 3. Emaili göndəririk
     try {
         await transporter.sendMail(mailOptions);
         console.log("Email uğurla göndərildi!");

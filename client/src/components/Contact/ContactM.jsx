@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function ContactM() {
   const [formData, setFormData] = useState({ email: '', subject: '', message: '' });
@@ -28,8 +29,17 @@ function ContactM() {
   };
 
   return (
-    <section className="min-h-[100vh] bg-[#FBFAF8] flex items-center justify-center px-[24px] font-serif">
-      <div className="w-full max-w-[576px]">
+    <>
+    <section className="min-h-[100vh] w-full mx-auto bg-[#FBFAF8] flex flex-col items-center justify-center px-[24px] font-serif ">
+      <div  className='  w-full  max-w-[1200px]'>
+          <nav className="flex items-center gap-2 text-[11px] tracking-[2px] uppercase text-gray-400 mb-12">
+                <Link to="/" className="hover:text-[#BC4C2A]">Home</Link>
+                <span>/</span>
+                <span className="text-[#BC4C2A] font-medium">Contact</span>
+              </nav>
+      </div>
+      <div className="w-full max-w-[576px] ">
+
 
         <div className="text-center mb-[56px]">
           <h2 className="text-[28px] tracking-[4px] uppercase text-[#BB4B2A] font-light">
@@ -114,6 +124,8 @@ function ContactM() {
 
       </div>
     </section>
+    </>
+    
   );
 }
 

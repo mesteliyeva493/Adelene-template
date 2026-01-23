@@ -52,11 +52,10 @@ function CheckoutForm() {
       const loadingToast = toast.loading("Ödəniş yoxlanılır...");
 
       try {
-        // 1. Stripe ödənişini təsdiqləyirik
         const { error, paymentIntent } = await stripe.confirmPayment({
           elements,
           confirmParams: {
-            return_url: `${window.location.origin}/succes`,
+            return_url: `${window.location.origin}/success`,
             payment_method_data: {
               billing_details: {
                 name: `${values.firstName} ${values.lastName}`,
@@ -65,7 +64,7 @@ function CheckoutForm() {
               },
             },
           },
-          redirect: "if_required", // Bu çox vacibdir: Səhifəni dərhal yeniləmir
+          redirect: "if_required", 
         });
 
         if (error) {
@@ -73,7 +72,6 @@ function CheckoutForm() {
           toast.error(error.message);
           setIsProcessing(false);
         } else if (paymentIntent && paymentIntent.status === "succeeded") {
-          // 2. Ödəniş uğurlu olduqda məlumatları bazaya göndəririk
           const finalOrder = {
             customerInfo: {
               fullName: `${values.firstName} ${values.lastName}`,
@@ -83,7 +81,8 @@ function CheckoutForm() {
               note: values.note,
             },
             items: items.map((item) => ({
-              productId: item._id,
+
+              productId: item.isGiftCard ? "GIFT-CARD" : String(item._id),
               title: item.title,
               price: Number(item.price),
               quantity: Number(item.quantity),
@@ -95,7 +94,6 @@ function CheckoutForm() {
 
           await axios.post("http://localhost:5050/orders", finalOrder);
 
-          // 3. Uğurlu nəticə və təmizlik
           toast.dismiss(loadingToast);
           toast.success("Ödəniş uğurla tamamlandı!");
           dispatch(clearCart());
@@ -104,7 +102,7 @@ function CheckoutForm() {
       } catch (err) {
         toast.dismiss(loadingToast);
         console.error("Proses xətası:", err);
-        toast.error("Xəta baş verdi, lakin ödənişiniz alınmış ola bilər. Zəhmət olmasa yoxlayın.");
+        toast.error("Ödəniş alındı, lakin bazaya yazıla bilmədi. Dəstək ilə əlaqə saxlayın.");
       } finally {
         setIsProcessing(false);
       }
@@ -112,55 +110,70 @@ function CheckoutForm() {
   });
 
   return (
-    <div className="max-w-[1200px] mx-auto px-6 py-16">
-      <form onSubmit={formik.handleSubmit} className="flex flex-col lg:flex-row gap-16">
-        <div className="flex-1 space-y-8">
-          <h2 className="text-2xl font-serif italic border-b pb-4">Çatdırılma və Ödəniş</h2>
+    <div style={{ maxWidth: '1200px' }} className="mx-auto px-[24px] py-[64px]">
+      <form onSubmit={formik.handleSubmit} className="flex flex-col lg:flex-row gap-[64px]">
+        <div className="flex-1 space-y-[32px]">
+          <h2 className="text-[24px] font-serif italic border-b pb-[16px]">Çatdırılma və Ödəniş</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px]">
             <div className="flex flex-col">
-              <input placeholder="Ad" className="w-full p-4 bg-[#F9F9F9] rounded-xl outline-none" {...formik.getFieldProps("firstName")} />
-              {formik.touched.firstName && formik.errors.firstName && <span className="text-red-500 text-xs mt-1 ml-2">{formik.errors.firstName}</span>}
+              <input 
+                placeholder="Ad" 
+                style={{ padding: '16px' }} 
+                className="w-full bg-[#F9F9F9] rounded-xl outline-none" 
+                {...formik.getFieldProps("firstName")} 
+              />
+              {formik.touched.firstName && formik.errors.firstName && (
+                <span className="text-red-500 text-[12px] mt-[4px] ml-[8px]">{formik.errors.firstName}</span>
+              )}
             </div>
             <div className="flex flex-col">
-              <input placeholder="Soyad" className="w-full p-4 bg-[#F9F9F9] rounded-xl outline-none" {...formik.getFieldProps("lastName")} />
-              {formik.touched.lastName && formik.errors.lastName && <span className="text-red-500 text-xs mt-1 ml-2">{formik.errors.lastName}</span>}
+              <input 
+                placeholder="Soyad" 
+                style={{ padding: '16px' }} 
+                className="w-full bg-[#F9F9F9] rounded-xl outline-none" 
+                {...formik.getFieldProps("lastName")} 
+              />
+              {formik.touched.lastName && formik.errors.lastName && (
+                <span className="text-red-500 text-[12px] mt-[4px] ml-[8px]">{formik.errors.lastName}</span>
+              )}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <input placeholder="Email" className="w-full p-4 bg-[#F9F9F9] rounded-xl outline-none" {...formik.getFieldProps("email")} />
-            <input placeholder="Telefon" className="w-full p-4 bg-[#F9F9F9] rounded-xl outline-none" {...formik.getFieldProps("phone")} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px]">
+            <input placeholder="Email" style={{ padding: '16px' }} className="w-full bg-[#F9F9F9] rounded-xl outline-none" {...formik.getFieldProps("email")} />
+            <input placeholder="Telefon" style={{ padding: '16px' }} className="w-full bg-[#F9F9F9] rounded-xl outline-none" {...formik.getFieldProps("phone")} />
           </div>
 
-          <input placeholder="Küçə və Ev ünvanı" className="w-full p-4 bg-[#F9F9F9] rounded-xl outline-none" {...formik.getFieldProps("street")} />
-          <input placeholder="Şəhər" className="w-full p-4 bg-[#F9F9F9] rounded-xl outline-none" {...formik.getFieldProps("city")} />
+          <input placeholder="Küçə və Ev ünvanı" style={{ padding: '16px' }} className="w-full bg-[#F9F9F9] rounded-xl outline-none" {...formik.getFieldProps("street")} />
+          <input placeholder="Şəhər" style={{ padding: '16px' }} className="w-full bg-[#F9F9F9] rounded-xl outline-none" {...formik.getFieldProps("city")} />
 
-          <div className="mt-10 p-6 bg-white border border-gray-100 rounded-[30px] shadow-sm">
-            <h4 className="text-sm font-bold mb-4 text-gray-400 uppercase tracking-widest">Kart Məlumatları</h4>
+          <div style={{ marginTop: '40px', padding: '24px', borderRadius: '30px' }} className="bg-white border border-gray-100 shadow-sm">
+            <h4 className="text-[12px] font-bold mb-[16px] text-gray-400 uppercase tracking-[2px]">Kart Məlumatları</h4>
             <PaymentElement />
           </div>
         </div>
 
         <div className="w-full lg:w-[400px]">
-          <div className="bg-[#FBFBFB] p-8 rounded-[30px] border border-gray-100 sticky top-10">
-            <h3 className="text-center font-bold uppercase mb-8 tracking-widest">Sifarişiniz</h3>
-            <div className="space-y-4 mb-6">
+          <div style={{ padding: '32px', borderRadius: '30px', top: '40px' }} className="bg-[#FBFBFB] border border-gray-100 sticky">
+            <h3 className="text-center font-bold uppercase mb-[32px] tracking-[2px]">Sifarişiniz</h3>
+            <div className="space-y-[16px] mb-[24px]">
               {items.map((item) => (
-                <div key={item._id} className="flex justify-between text-sm italic text-gray-600">
+                <div key={item._id} className="flex justify-between text-[14px] italic text-gray-600">
                   <span>{item.title} x{item.quantity}</span>
-                  <span>${item.price * item.quantity}</span>
+                  <span>${item.price * item.quantity}.00</span>
                 </div>
               ))}
             </div>
-            <div className="border-t pt-4 flex justify-between font-bold text-xl text-[#BB4B2A]">
+            <div style={{ paddingTop: '16px' }} className="border-t flex justify-between font-bold text-[20px] text-[#BB4B2A]">
               <span>Cəmi:</span>
               <span>${totalPrice}.00</span>
             </div>
             <button
               type="submit"
               disabled={!stripe || isProcessing}
-              className="w-full mt-8 py-4 bg-[#BB4B2A] text-white rounded-full uppercase font-bold hover:bg-black transition-all disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer shadow-lg active:scale-95"
+              style={{ marginTop: '32px', padding: '16px' }}
+              className="w-full bg-[#BB4B2A] text-white rounded-full uppercase font-bold hover:bg-black transition-all disabled:bg-gray-400 disabled:cursor-not-allowed shadow-lg active:scale-95"
             >
               {isProcessing ? "İşlənilir..." : "Ödənişi Tamamla"}
             </button>
