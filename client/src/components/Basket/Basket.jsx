@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { addToCart, decreaseCart, removeFromCart } from '../../features/Cart/cartSlice';
 
-const Basket = () => {
+function Basket () {
   const { items } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,11 +28,11 @@ const Basket = () => {
   return (
 
     <>
-    <section>
-          <div style={{ maxWidth: '1440px' }} className="mx-auto px-[24px] md:px-[48px] py-[80px] font-sans">
+    <section >
+      <div  className="max-w-[1200px] mx-auto    pt-[34px] pb-[30px]  font-sans">
+        
       <div className="flex flex-col lg:flex-row gap-[80px]">
         
-        {/* SOL TƏRƏF: MƏHSUL SİYAHISI */}
         <div className="flex-1">
           <h1 className="text-[30px] font-light uppercase tracking-[4px] mb-[48px] text-gray-800">Shopping Basket</h1>
           
@@ -48,7 +48,6 @@ const Basket = () => {
               <div key={item._id} style={{ padding: '40px 0' }} className="grid grid-cols-1 md:grid-cols-5 items-center group relative">
                 <div className="col-span-2 flex items-center gap-[24px]">
                   
-                  {/* PRODUCT IMAGE OR CARD TEXT */}
                   <div 
                     style={{ width: '96px', height: '128px' }} 
                     className="bg-[#F3F3F3] rounded-[20px] overflow-hidden flex-shrink-0 flex items-center justify-center border border-gray-50"
@@ -105,7 +104,6 @@ const Basket = () => {
           </div>
         </div>
 
-        {/* SAĞ TƏRƏF: SUMMARY */}
         <div className="w-full lg:w-[400px]">
           <div 
             style={{ padding: '40px', borderRadius: '40px', top: '128px' }} 

@@ -7,7 +7,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CiMail, CiLock, CiCircleCheck, CiCircleMinus } from "react-icons/ci";
 
-const Login = () => {
+function Login ()  {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -40,7 +40,17 @@ const Login = () => {
   });
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center bg-white px-4">
+    <>
+      <section>
+      <div  className="max-w-[1200px] mx-auto    pt-[34px] font-sans">
+            <nav className="flex items-center gap-[8px] text-[10px] tracking-[2px] uppercase text-gray-400 ">
+              <Link to="/">Home</Link>
+              <span>/</span>
+        
+              <span className="text-[#BC4C2A] font-bold">Login</span>
+            </nav>
+      <div  className='  flex  justify-center '>
+      
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -142,6 +152,10 @@ const Login = () => {
         </form>
       </motion.div>
     </div>
+    </div>
+    </section>
+    
+    </>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 function ContactM() {
   const [formData, setFormData] = useState({ email: '', subject: '', message: '' });
@@ -30,102 +31,117 @@ function ContactM() {
 
   return (
     <>
-    <section className="min-h-[100vh] w-full mx-auto bg-[#FBFAF8] flex flex-col items-center justify-center px-[24px] font-serif ">
-      <div  className='  w-full  max-w-[1200px]'>
-          <nav className="flex items-center gap-2 text-[11px] tracking-[2px] uppercase text-gray-400 mb-12">
-                <Link to="/" className="hover:text-[#BC4C2A]">Home</Link>
-                <span>/</span>
-                <span className="text-[#BC4C2A] font-medium">Contact</span>
-              </nav>
-      </div>
-      <div className="w-full max-w-[576px] ">
+    <section >
+      <div  className="max-w-[1200px] mx-auto    pt-[34px] pb-[30px]  font-sans">
+        
+        <nav className="flex items-center gap-[8px] text-[11px] tracking-[2px] uppercase text-gray-400 mb-[48px]">
+          <Link to="/" className="hover:text-[#BC4C2A] transition-colors">
+            Home
+          </Link>
+          <span>/</span>
+          <span className="text-[#BC4C2A] font-medium">Contact</span>
+        </nav>
 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="w-full max-w-[576px] mx-auto flex flex-col"
+        >
+          <div className="text-center mb-[56px]">
+            <motion.h2 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="text-4xl md:text-5xl font-serif italic text-[#BB4B2A] mb-3"
+                    >
+                   Contact
+                    </motion.h2>
 
-        <div className="text-center mb-[56px]">
-          <h2 className="text-[28px] tracking-[4px] uppercase text-[#BB4B2A] font-light">
-            Contact
-          </h2>
-        </div>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-[48px]">
-
-          <div className="relative group">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-full bg-transparent py-[12px] text-[14px] tracking-[0.5px] outline-none"
-            />
-            <span className="absolute left-0 bottom-0 w-full h-[1px] bg-gray-300"></span>
-            <span
-              className="absolute left-0 bottom-0 w-0 h-[2px] bg-[#BB4B2A]
-              transition-all duration-500 group-focus-within:w-full"
-            ></span>
+               <motion.p 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className="text-[10px] uppercase tracking-[4px] text-gray-400 font-light"
+                      >
+              We'd love to hear from you
+                      </motion.p>
           </div>
 
-          <div className="relative group">
-            <input
-              type="text"
-              name="subject"
-              placeholder="Subject"
-              value={formData.subject}
-              onChange={handleChange}
-              required
-              className="w-full bg-transparent py-[12px] text-[14px] tracking-[0.5px] outline-none"
-            />
-            <span className="absolute left-0 bottom-0 w-full h-[1px] bg-gray-300"></span>
-            <span
-              className="absolute left-0 bottom-0 w-0 h-[2px] bg-[#BB4B2A]
-              transition-all duration-500 group-focus-within:w-full"
-            ></span>
-          </div>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-[48px]">
+            
+            <div className="relative group">
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="w-full bg-transparent py-[12px] text-[14px] tracking-[0.5px] outline-none font-serif italic"
+              />
+              <span className="absolute left-0 bottom-0 w-full h-[1px] bg-gray-200"></span>
+              <span className="absolute left-0 bottom-0 w-[0px] h-[1.5px] bg-[#BB4B2A] transition-all duration-[700ms] group-focus-within:w-full"></span>
+            </div>
 
-          <div className="relative group">
-            <textarea
-              name="message"
-              rows="3"
-              placeholder="Message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-              className="w-full bg-transparent py-[12px] text-[14px] tracking-[0.5px]
-              outline-none resize-none"
-            />
-            <span className="absolute left-0 bottom-0 w-full h-[1px] bg-gray-300"></span>
-            <span
-              className="absolute left-0 bottom-0 w-0 h-[2px] bg-[#BB4B2A]
-              transition-all duration-500 group-focus-within:w-full"
-            ></span>
-          </div>
+            <div className="relative group">
+              <input
+                type="text"
+                name="subject"
+                placeholder="Subject"
+                value={formData.subject}
+                onChange={handleChange}
+                required
+                className="w-full bg-transparent py-[12px] text-[14px] tracking-[0.5px] outline-none"
+              />
+              <span className="absolute left-0 bottom-0 w-full h-[1px] bg-gray-200"></span>
+              <span className="absolute left-0 bottom-0 w-[0px] h-[1.5px] bg-[#BB4B2A] transition-all duration-[700ms] group-focus-within:w-full"></span>
+            </div>
 
-          {status.msg && (
-            <p
-              className={`text-center text-[11px] tracking-[1px]
-              ${status.type === 'success' ? 'text-green-600' : 'text-[#BB4B2A]'}`}
+            <div className="relative group">
+              <textarea
+                name="message"
+                rows="3"
+                placeholder="Message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+                className="w-full bg-transparent py-[12px] text-[14px] tracking-[0.5px] outline-none resize-none min-h-[100px]"
+              />
+              <span className="absolute left-0 bottom-0 w-full h-[1px] bg-gray-200"></span>
+              <span className="absolute left-0 bottom-0 w-[0px] h-[1.5px] bg-[#BB4B2A] transition-all duration-[700ms] group-focus-within:w-full"></span>
+            </div>
+
+            {status.msg && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className={`text-center text-[11px] tracking-[1.5px] font-bold uppercase ${
+                  status.type === 'success'
+                    ? 'text-green-600'
+                    : 'text-[#BB4B2A]'
+                }`}
+              >
+                {status.msg}
+              </motion.p>
+            )}
+
+            <motion.button
+              type="submit"
+              disabled={loading}
+              whileHover={!loading ? { scale: 1.02, backgroundColor: '#904F2E' } : {}}
+              whileTap={!loading ? { scale: 0.98 } : {}}
+              className="w-full bg-[#BB4B2A] text-white py-[16px] mt-[24px] text-[11px] uppercase tracking-[4px] font-medium transition-all duration-[300ms] shadow-lg shadow-orange-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {status.msg}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="mt-[24px] w-full border border-[#BB4B2A]
-            py-[16px] text-[11px] tracking-[4px] uppercase text-[#BB4B2A]
-            transition-all duration-500 hover:bg-[#BB4B2A] hover:text-white
-            disabled:opacity-40"
-          >
-            {loading ? 'Sending...' : 'Send Message'}
-          </button>
-        </form>
-
+              {loading ? 'Sending...' : 'Send Message'}
+            </motion.button>
+          </form>
+        </motion.div>
       </div>
     </section>
-    </>
     
+    </>
+  
   );
 }
 

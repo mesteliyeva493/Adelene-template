@@ -3,7 +3,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 
-function AdminOrders ()  {
+function AdminOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
@@ -19,7 +19,7 @@ function AdminOrders ()  {
       });
       setOrders(res.data);
     } catch (err) {
-      toast.error("Məlumatlar gətirilərkən xəta!");
+      toast.error("Failed to load orders!");
     } finally {
       setLoading(false);
     }
@@ -27,81 +27,198 @@ function AdminOrders ()  {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      await axios.patch(`http://localhost:5050/orders/${id}`, 
+      await axios.patch(
+        `http://localhost:5050/orders/${id}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      toast.success(`Status ${newStatus} olaraq dəyişdi`);
-      setOrders(orders.map(o => o._id === id ? { ...o, status: newStatus } : o));
+      toast.success(`Status updated to ${newStatus}`);
+      setOrders(
+        orders.map(o =>
+          o._id === id ? { ...o, status: newStatus } : o
+        )
+      );
     } catch (err) {
-      toast.error("Yenilənmə alınmadı");
+      toast.error("Status update failed");
     }
   };
 
-  if (loading) return <div className="text-center py-20 text-[#BB4B2A] animate-pulse font-bold">YÜKLƏNİR...</div>;
+  if (loading)
+    return (
+      <div
+        className="text-center font-bold animate-pulse"
+        style={{ padding: "80px 0", color: "#BB4B2A" }}
+      >
+        LOADING...
+      </div>
+    );
 
   return (
-    <div className="w-full overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-separate border-spacing-y-3">
+    <>
+      <div style={{ width: "100%", overflow: "hidden" }}>
+      <div style={{ overflowX: "auto" }}>
+        <table
+          className="w-full text-left"
+          style={{ borderSpacing: "0 12px", borderCollapse: "separate" }}
+        >
           <thead>
-            <tr className="text-gray-500 text-[11px] uppercase tracking-[0.2em] px-4">
-              <th className="pb-4 pl-6">Müştəri / E-mail</th>
-              <th className="pb-4">Məhsullar</th>
-              <th className="pb-4">Məbləğ</th>
-              <th className="pb-4">Status</th>
-              <th className="pb-4 text-right pr-6">Əməliyyat</th>
+            <tr
+              className="uppercase text-gray-500"
+              style={{
+                fontSize: "11px",
+                letterSpacing: "0.2em",
+                padding: "0 16px"
+              }}
+            >
+              <th style={{ paddingBottom: "16px", paddingLeft: "24px" }}>
+                Customer / Email
+              </th>
+              <th style={{ paddingBottom: "16px" }}>Products</th>
+              <th style={{ paddingBottom: "16px" }}>Total</th>
+              <th style={{ paddingBottom: "16px" }}>Status</th>
+              <th
+                style={{
+                  paddingBottom: "16px",
+                  paddingRight: "24px",
+                  textAlign: "right"
+                }}
+              >
+                Action
+              </th>
             </tr>
           </thead>
+
           <tbody>
             {orders.map((order, index) => (
-              <motion.tr 
+              <motion.tr
+                key={order._id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
-                key={order._id} 
-                className="bg-white/5 hover:bg-white/10 transition-all duration-300 group shadow-lg"
+                className="group"
+                style={{
+                  background: "rgba(255,255,255,0.05)",
+                  transition: "0.3s",
+                  boxShadow: "0 10px 20px rgba(0,0,0,0.25)"
+                }}
               >
-                <td className="py-5 pl-6 rounded-l-[20px]">
-                  <div className="font-semibold text-white">{order.customerInfo.fullName}</div>
-                  <div className="text-[11px] text-gray-500">{order.customerInfo.email}</div>
+                <td
+                  style={{
+                    padding: "20px 0 20px 24px",
+                    borderRadius: "20px 0 0 20px"
+                  }}
+                >
+                  <div style={{ fontWeight: 600, color: "#fff" }}>
+                    {order.customerInfo.fullName}
+                  </div>
+                  <div style={{ fontSize: "11px", color: "#6b7280" }}>
+                    {order.customerInfo.email}
+                  </div>
                 </td>
-                <td className="py-5 text-sm text-gray-300 italic">
-                  {order.items.map(item => item.title).join(", ").substring(0, 30)}...
+
+                <td
+                  style={{
+                    padding: "20px 0",
+                    fontSize: "14px",
+                    color: "#d1d5db",
+                    fontStyle: "italic"
+                  }}
+                >
+                  {order.items
+                    .map(item => item.title)
+                    .join(", ")
+                    .substring(0, 30)}
+                  ...
                 </td>
-                <td className="py-5 font-mono text-[#BB4B2A] font-bold">
+
+                <td
+                  style={{
+                    padding: "20px 0",
+                    fontFamily: "monospace",
+                    color: "#BB4B2A",
+                    fontWeight: 700
+                  }}
+                >
                   ${order.totalPrice}
                 </td>
-                <td className="py-5">
-                  <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                    order.status === 'Pending' ? 'bg-yellow-500/20 text-yellow-500' : 
-                    order.status === 'Delivered' ? 'bg-green-500/20 text-green-500' : 'bg-blue-500/20 text-blue-500'
-                  }`}>
+
+                <td style={{ padding: "20px 0" }}>
+                  <span
+                    style={{
+                      padding: "4px 12px",
+                      borderRadius: "999px",
+                      fontSize: "10px",
+                      fontWeight: 700,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                      background:
+                        order.status === "Pending"
+                          ? "rgba(234,179,8,0.2)"
+                          : order.status === "Delivered"
+                          ? "rgba(34,197,94,0.2)"
+                          : "rgba(59,130,246,0.2)",
+                      color:
+                        order.status === "Pending"
+                          ? "#eab308"
+                          : order.status === "Delivered"
+                          ? "#22c55e"
+                          : "#3b82f6"
+                    }}
+                  >
                     {order.status}
                   </span>
                 </td>
-                <td className="py-5 pr-6 rounded-r-[20px] text-right">
-                  <select 
+
+                <td
+                  style={{
+                    padding: "20px 24px 20px 0",
+                    borderRadius: "0 20px 20px 0",
+                    textAlign: "right"
+                  }}
+                >
+                  <select
                     value={order.status}
-                    onChange={(e) => handleStatusChange(order._id, e.target.value)}
-                    className="bg-[#0f0f0f] border border-white/10 text-[11px] text-white p-2 rounded-lg outline-none focus:border-[#BB4B2A] transition-colors cursor-pointer"
+                    onChange={(e) =>
+                      handleStatusChange(order._id, e.target.value)
+                    }
+                    style={{
+                      background: "#0f0f0f",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      color: "#fff",
+                      fontSize: "11px",
+                      padding: "8px",
+                      borderRadius: "8px",
+                      outline: "none",
+                      cursor: "pointer"
+                    }}
                   >
                     <option value="Pending">Pending</option>
                     <option value="Shipped">Shipped</option>
                     <option value="Delivered">Delivered</option>
-                    <option value="Cancelled">Ləğv et</option>
+                    <option value="Cancelled">Cancelled</option>
                   </select>
                 </td>
               </motion.tr>
             ))}
           </tbody>
         </table>
+
         {orders.length === 0 && (
-          <div className="text-center py-20 text-gray-600 italic">Hələ ki, heç bir sifariş yoxdur.</div>
+          <div
+            style={{
+              textAlign: "center",
+              padding: "80px 0",
+              color: "#6b7280",
+              fontStyle: "italic"
+            }}
+          >
+            There are no orders yet.
+          </div>
         )}
       </div>
     </div>
+    </>
   );
-};
+}
 
 export default AdminOrders;

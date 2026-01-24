@@ -1,11 +1,11 @@
+import OurCr from '@/components/OurCraft/OurCr'
 import React from 'react'
-import OurC from "../../components/OurCraft/ourC"
 
 function OurCraft() {
   return (
     <div>
+      <OurCr/>
 
-      <OurC/>
     </div>
   )
 }

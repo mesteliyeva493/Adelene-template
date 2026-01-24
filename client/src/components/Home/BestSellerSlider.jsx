@@ -95,7 +95,7 @@ function BestSellerSlider() {
               to="/shopAll"
               className="inline-block px-12 py-4 border border-[#BC4C2A] text-[#BC4C2A] text-[11px] uppercase tracking-[4px] transition-all duration-300 hover:bg-[#BC4C2A] hover:text-white"
             >
-              Shop All Bags
+              Shop All 
             </Link>
           </div>
         </div>
@@ -146,7 +146,7 @@ function BestSellerSlider() {
                 
                 <Link 
                   to={`/shopdetail/${selectedProduct._id}`}
-                  className="w-full py-4 bg-black text-white text-center text-[11px] uppercase tracking-[3px] hover:bg-[#BC4C2A] transition-colors"
+                  className="w-full py-4 bg-[#BB4B2A] rounded-2xl text-white text-center text-[11px] uppercase tracking-[3px] hover:bg-[#8f371d] transition-colors"
                 >
                   View Full Details
                 </Link>
