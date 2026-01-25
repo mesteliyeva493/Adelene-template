@@ -26,6 +26,16 @@ function ShopAll () {
 
   const queryParams = new URLSearchParams(location.search);
   const searchTerm = queryParams.get("search") || "";
+  const categoryFromUrl = queryParams.get("category"); // Landing page-dən gələn 'category' sualını tuturuq
+
+  // 1. Landing Page-dən gələn kateqoriya filtrini tətbiq etmək üçün:
+  useEffect(() => {
+    if (categoryFromUrl) {
+      // URL-də category varsa (məs: ?category=wallets), onu seçilmiş kateqoriya et
+      // Qeyd: Bazadakı kateqoriya adları ilə URL-dəkilərin eyni (Case-sensitive) olduğundan əmin ol
+      setSelectedCategory(categoryFromUrl);
+    }
+  }, [categoryFromUrl]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +54,8 @@ function ShopAll () {
     };
     fetchData();
   }, []);
+
+  // ... handleAddToCart, openModal, closeModal funksiyaları eyni qalır
 
   const handleAddToCart = (e, product) => {
     if (e) e.stopPropagation();
@@ -71,7 +83,10 @@ function ShopAll () {
   const filteredProducts = products
     .filter((item) => {
       const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase());
-      const categoryMatch = selectedCategory === "All" || item.categoryId?.title === selectedCategory;
+      // Kateqoriya yoxlaması: Həm kiçik/böyük hərflərə qarşı dözümlü etdik
+      const categoryMatch = selectedCategory === "All" || 
+        item.categoryId?.title?.toLowerCase() === selectedCategory?.toLowerCase();
+      
       const priceMatch = Number(item.price) <= priceLimit;
       const tagMatch = selectedTagId === "All" || (item.tags && item.tags.some(t => {
         const tId = typeof t === 'object' ? t._id : t;
@@ -88,22 +103,29 @@ function ShopAll () {
   return (
   <>
     <section className="max-w-[1200px] mx-auto px-[16px] font-sans mt-[128px]">
-      
+      {/* ... Navigation və Search hissəsi eyni qalır ... */}
       <nav className="flex items-center gap-[8px] text-[11px] tracking-[2px] uppercase text-gray-400 mb-[48px]">
         <Link to="/" className="hover:text-[#BC4C2A]">Home</Link>
         <span>/</span>
         <span className="text-[#BC4C2A] font-medium">Shop All</span>
       </nav>
 
-      {searchTerm && (
+      {(searchTerm || selectedCategory !== "All") && (
         <div className="mb-[32px] flex items-center justify-between bg-gray-50 p-[16px] rounded-[12px]">
-          <p className="text-[14px] italic">Showing results for: <span className="text-[#BC4C2A] font-bold">"{searchTerm}"</span></p>
-          <button onClick={() => navigate("/shopAll")} className="text-[10px] uppercase underline text-gray-400">Clear</button>
+          <p className="text-[14px] italic">
+            Filter: <span className="text-[#BC4C2A] font-bold">
+              {searchTerm ? `"${searchTerm}"` : selectedCategory}
+            </span>
+          </p>
+          <button onClick={() => {
+            navigate("/shopAll");
+            setSelectedCategory("All");
+          }} className="text-[10px] uppercase underline text-gray-400">Clear All</button>
         </div>
       )}
 
       <div className="flex flex-col lg:flex-row gap-[64px]">
-        
+        {/* Sidebar Filter */}
         <aside className="w-full lg:w-[288px] flex-shrink-0">
           <div className="sticky top-[112px] space-y-[48px]">
             <h2 className="text-[24px] font-normal text-[#BB4B2A] tracking-[2px] uppercase italic">Filter By</h2>
@@ -111,13 +133,13 @@ function ShopAll () {
             <div>
               <h3 className="text-[12px] font-bold uppercase tracking-[2px] mb-[16px] text-gray-900">Categories</h3>
               <ul className="space-y-[12px] text-[14px] text-gray-500 italic">
-                <li onClick={() => setSelectedCategory("All")} className={`cursor-pointer ${selectedCategory === "All" ? "text-[#BC4C2A] underline" : ""}`}>All Products</li>
+                <li onClick={() => setSelectedCategory("All")} className={`cursor-pointer transition-colors hover:text-[#BC4C2A] ${selectedCategory === "All" ? "text-[#BC4C2A] underline" : ""}`}>All Products</li>
                 {categories.map(cat => (
-                  <li key={cat._id} onClick={() => setSelectedCategory(cat.title)} className={`cursor-pointer ${selectedCategory === cat.title ? "text-[#BC4C2A] underline" : ""}`}>{cat.title}</li>
+                  <li key={cat._id} onClick={() => setSelectedCategory(cat.title)} className={`cursor-pointer transition-colors hover:text-[#BC4C2A] ${selectedCategory === cat.title ? "text-[#BC4C2A] underline" : ""}`}>{cat.title}</li>
                 ))}
               </ul>
             </div>
-
+            {/* ... Color və Price Filter hissəsi eyni qalır ... */}
             <div>
               <h3 className="text-[12px] font-bold uppercase tracking-[2px] mb-[16px] text-gray-900">Color</h3>
               <div className="flex flex-wrap gap-[12px]">
@@ -135,6 +157,7 @@ function ShopAll () {
           </div>
         </aside>
 
+        {/* Product Grid */}
         <div className="flex-1">
           <div className="flex justify-between items-center mb-[40px] pb-[16px] border-b border-gray-50">
             <p className="text-[14px] text-gray-400 italic">{filteredProducts.length} Products Found</p>
@@ -152,10 +175,10 @@ function ShopAll () {
             {filteredProducts.slice(0, visibleCount).map((item) => (
               <motion.div layout key={item._id} className="group flex flex-col items-center">
                 <div className="relative w-full aspect-[3/4] rounded-[30px] overflow-hidden bg-[#F3F3F3]">
-                  <img src={item.image} alt={item.title} onClick={() => navigate(`/shopdetail/${item._id}`)} className="w-full h-full object-contain p-[24px] cursor-pointer group-hover:scale-110 transition-transform duration-1000" />
+                  <img src={item.image} alt={item.title} onClick={() => navigate(`/shopdetail/${item._id}`)} className="w-full h-full object-contain p-[24px] cursor-pointer group-hover:scale-110 transition-transform duration-700" />
                   <div className="absolute bottom-[24px] left-1/2 -translate-x-1/2 flex flex-col gap-[8px] w-[85%] opacity-0 translate-y-[24px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                    <button onClick={(e) => openModal(e, item)} className="bg-white/95 text-black text-[10px] uppercase py-[14px] rounded-full shadow-xl">Quick View</button>
-                    <button onClick={(e) => handleAddToCart(e, item)} className="bg-[#BC4C2A] text-white text-[10px] uppercase py-[14px] rounded-full shadow-xl">Add to Cart</button>
+                    <button onClick={(e) => openModal(e, item)} className="bg-white/95 text-black text-[10px] uppercase py-[14px] rounded-full shadow-xl hover:bg-black hover:text-white transition-colors">Quick View</button>
+                    <button onClick={(e) => handleAddToCart(e, item)} className="bg-[#BC4C2A] text-white text-[10px] uppercase py-[14px] rounded-full shadow-xl hover:bg-[#904F2E] transition-colors">Add to Cart</button>
                   </div>
                 </div>
                 <div className="mt-[24px] text-center">
@@ -174,6 +197,7 @@ function ShopAll () {
         </div>
       </div>
       
+      {/* Modal hissəsi eyni qalır */}
       <AnimatePresence>
         {isModalOpen && selectedProduct && (
           <div className="fixed inset-0 z-[10000] flex items-center justify-center p-[16px]">
@@ -187,7 +211,7 @@ function ShopAll () {
                  <span className="text-[#BC4C2A] text-[10px] uppercase tracking-[4px] mb-[16px] font-bold">Premium Selection</span>
                  <h2 className="text-[30px] font-light uppercase mb-[12px]">{selectedProduct.title}</h2>
                  <p className="text-[24px] text-[#BC4C2A] font-serif italic mb-[32px]">${selectedProduct.price}.00</p>
-                 <button onClick={(e) => handleAddToCart(e, selectedProduct)} className="w-full py-[20px] bg-[#BC4C2A] text-white text-[11px] uppercase tracking-[4px] rounded-full">Add to Cart</button>
+                 <button onClick={(e) => handleAddToCart(e, selectedProduct)} className="w-full py-[20px] bg-[#BC4C2A] text-white text-[11px] uppercase tracking-[4px] rounded-full hover:bg-[#904F2E] transition-colors">Add to Cart</button>
                </div>
              </motion.div>
           </div>

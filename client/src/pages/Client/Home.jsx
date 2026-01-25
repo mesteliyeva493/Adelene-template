@@ -1,4 +1,5 @@
 import BestSellerSlider from "@/components/Home/BestSellerSlider";
+import Fhc from "@/components/Home/Fhc";
 import Hero from "@/components/Home/Hero";
 import Mini from "@/components/Home/Mini";
 import TawkChat from "@/components/TawkChat/TawkChat";
@@ -16,6 +17,7 @@ function Home() {
       <Hero />
       <BestSellerSlider />
       <Mini />
+      <Fhc/>
     </>
   );
 }
