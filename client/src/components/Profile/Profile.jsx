@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
@@ -11,7 +12,12 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-[60vh] flex flex-col items-center justify-center font-serif">
+ <>
+  <Helmet>
+        <title> Profile</title>
+      </Helmet>
+    
+    <section className="min-h-[60vh] flex flex-col items-center justify-center font-serif">
       <h2 className="text-3xl italic text-[#BB4B2A] mb-4">My Account</h2>
       
       <button 
@@ -20,7 +26,8 @@ const Profile = () => {
       >
         Logout / Exit
       </button>
-    </div>
+    </section>
+ </>
   );
 };
 

@@ -26,13 +26,11 @@ function ShopAll () {
 
   const queryParams = new URLSearchParams(location.search);
   const searchTerm = queryParams.get("search") || "";
-  const categoryFromUrl = queryParams.get("category"); // Landing page-dən gələn 'category' sualını tuturuq
+  const categoryFromUrl = queryParams.get("category"); 
 
-  // 1. Landing Page-dən gələn kateqoriya filtrini tətbiq etmək üçün:
   useEffect(() => {
     if (categoryFromUrl) {
-      // URL-də category varsa (məs: ?category=wallets), onu seçilmiş kateqoriya et
-      // Qeyd: Bazadakı kateqoriya adları ilə URL-dəkilərin eyni (Case-sensitive) olduğundan əmin ol
+
       setSelectedCategory(categoryFromUrl);
     }
   }, [categoryFromUrl]);
@@ -55,7 +53,6 @@ function ShopAll () {
     fetchData();
   }, []);
 
-  // ... handleAddToCart, openModal, closeModal funksiyaları eyni qalır
 
   const handleAddToCart = (e, product) => {
     if (e) e.stopPropagation();
@@ -83,7 +80,6 @@ function ShopAll () {
   const filteredProducts = products
     .filter((item) => {
       const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase());
-      // Kateqoriya yoxlaması: Həm kiçik/böyük hərflərə qarşı dözümlü etdik
       const categoryMatch = selectedCategory === "All" || 
         item.categoryId?.title?.toLowerCase() === selectedCategory?.toLowerCase();
       
@@ -102,8 +98,7 @@ function ShopAll () {
 
   return (
   <>
-    <section className="max-w-[1200px] mx-auto px-[16px] font-sans mt-[128px]">
-      {/* ... Navigation və Search hissəsi eyni qalır ... */}
+    <section className="max-w-[1200px] mx-auto px-[16px] font-sans mt-[128px] mb-[40px]">
       <nav className="flex items-center gap-[8px] text-[11px] tracking-[2px] uppercase text-gray-400 mb-[48px]">
         <Link to="/" className="hover:text-[#BC4C2A]">Home</Link>
         <span>/</span>
@@ -125,7 +120,6 @@ function ShopAll () {
       )}
 
       <div className="flex flex-col lg:flex-row gap-[64px]">
-        {/* Sidebar Filter */}
         <aside className="w-full lg:w-[288px] flex-shrink-0">
           <div className="sticky top-[112px] space-y-[48px]">
             <h2 className="text-[24px] font-normal text-[#BB4B2A] tracking-[2px] uppercase italic">Filter By</h2>
@@ -139,7 +133,6 @@ function ShopAll () {
                 ))}
               </ul>
             </div>
-            {/* ... Color və Price Filter hissəsi eyni qalır ... */}
             <div>
               <h3 className="text-[12px] font-bold uppercase tracking-[2px] mb-[16px] text-gray-900">Color</h3>
               <div className="flex flex-wrap gap-[12px]">
@@ -157,7 +150,6 @@ function ShopAll () {
           </div>
         </aside>
 
-        {/* Product Grid */}
         <div className="flex-1">
           <div className="flex justify-between items-center mb-[40px] pb-[16px] border-b border-gray-50">
             <p className="text-[14px] text-gray-400 italic">{filteredProducts.length} Products Found</p>
@@ -197,7 +189,6 @@ function ShopAll () {
         </div>
       </div>
       
-      {/* Modal hissəsi eyni qalır */}
       <AnimatePresence>
         {isModalOpen && selectedProduct && (
           <div className="fixed inset-0 z-[10000] flex items-center justify-center p-[16px]">

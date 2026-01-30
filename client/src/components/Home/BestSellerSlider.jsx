@@ -28,7 +28,7 @@ function BestSellerSlider() {
 
   return (
     <>
-      <section className="py-[100px] bg-white">
+      <section className="py-[80px] bg-white">
         <div className="container max-w-[1200px] mx-auto flex flex-col gap-[50px]">
           <h2 className="text-center text-3xl font-normal text-[#BB4B2A] tracking-[4px] uppercase">
             Best Sellers

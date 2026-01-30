@@ -13,32 +13,22 @@ function NotFound() {
         className="fixed top-0 left-0 w-full h-full z-[9999] leading-[24px]
                    bg-gradient-to-br from-[#789B03] to-[#ef0000]"
       >
-        <div
-          className="flex flex-col items-center text-black text-[40px]"
-        >
+        <div className="flex flex-col items-center text-black text-[40px]">
           <img
             src="https://cdn.rawgit.com/ahmedhosna95/upload/1731955f/sad404.svg"
             alt="404"
             className="my-[5px] h-[342px]"
           />
 
-          <span
-            className="relative text-[132px] font-black mb-[50px]"
-          >
+          <span className="relative text-[132px] font-black mb-[50px]">
             404 PAGE
           </span>
 
-          <p
-            className="text-[19px] mt-[30px] mb-[15px]"
-          >
+          <p className="text-[19px] mt-[30px] mb-[15px]">
             The page you were looking for could not be found
           </p>
 
-          <p
-            className="text-[15px]"
-          >
-            Back to previous page
-          </p>
+          <p className="text-[15px]">Back to previous page</p>
 
           <Link
             to="/"

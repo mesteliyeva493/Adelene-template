@@ -17,6 +17,9 @@ import Succes from "@/components/Succes/Succes";
 import Admin from "@/pages/Admin/Admin";
 import OurCraft from "@/pages/Client/OurCraft";
 import OurStory from "@/pages/Client/OurStory";
+import Faq from "@/components/Faq/Faq";
+import Shipping from "@/components/Shipping/Shipping";
+import Policys from "@/components/Policys/Policys";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +32,9 @@ const router = createBrowserRouter([
       { path: "contact", element: <Contact /> },
       { path: "shopdetail/:id", element: <Shopdetail /> },
       { path: "login", element: <Login /> },
+     {path:"faq", element:<Faq/>},
+          {path:"shipping", element:<Shipping/>},
+      {path:"policy",element:<Policys/>},     
       {path:"ourCraft",element:<OurCraft/>},     
       {path:"ourStory",element:<OurStory/>},
       { path: "register", element: <Register /> },

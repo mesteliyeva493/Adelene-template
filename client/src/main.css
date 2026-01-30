@@ -13,7 +13,7 @@ html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overflow-y: auto; 
+  /* overflow-y: auto; silindi */
   scroll-behavior: smooth;
 }
 
@@ -23,7 +23,6 @@ html, body {
   flex-direction: column;
 }
 
-/* 2. Tailwind Base Styles */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -60,7 +59,7 @@ html, body {
 
   body {
     @apply bg-background text-foreground;
-    overflow-y: visible !important; 
+    /* overflow-y: visible !important; silindi */
   }
 }
 
@@ -88,4 +87,3 @@ html, body {
   font-size: 14px !important;
   font-weight: bold;
 }
-

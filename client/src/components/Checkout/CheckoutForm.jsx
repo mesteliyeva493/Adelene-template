@@ -11,6 +11,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { Helmet } from "react-helmet";
 
 function CheckoutForm() {
   const { items } = useSelector((state) => state.cart);
@@ -112,6 +113,9 @@ function CheckoutForm() {
 
   return (
     <>
+         <Helmet>
+              <title> Checkout</title>
+            </Helmet>
       <section>
         <div className="max-w-[1200px] mx-auto pt-[34px] pb-[30px] font-sans">
           <div style={{ maxWidth: "1200px" }} className="mx-auto px-[24px] py-[64px]">

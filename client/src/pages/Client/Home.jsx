@@ -1,5 +1,6 @@
 import BestSellerSlider from "@/components/Home/BestSellerSlider";
 import Fhc from "@/components/Home/Fhc";
+import Follow from "@/components/Home/Follow";
 import Hero from "@/components/Home/Hero";
 import Mini from "@/components/Home/Mini";
 import TawkChat from "@/components/TawkChat/TawkChat";
@@ -18,6 +19,7 @@ function Home() {
       <BestSellerSlider />
       <Mini />
       <Fhc/>
+      <Follow/>
     </>
   );
 }

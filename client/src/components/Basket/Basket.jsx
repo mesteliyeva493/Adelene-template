@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { addToCart, decreaseCart, removeFromCart } from '../../features/Cart/cartSlice';
+import { Helmet } from 'react-helmet';
 
 function Basket () {
   const { items } = useSelector((state) => state.cart);
@@ -28,6 +29,9 @@ function Basket () {
   return (
 
     <>
+         <Helmet>
+          <title> Basket</title>
+        </Helmet>
     <section >
       <div  className="max-w-[1200px] mx-auto    pt-[34px] pb-[30px]  font-sans">
         
