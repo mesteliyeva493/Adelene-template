@@ -39,8 +39,8 @@ function Checkout() {
   if (items.length === 0) {
     return (
       <div className="flex flex-col justify-center items-center h-screen space-y-[16px]">
-        <p className="text-[20px] font-serif italic text-gray-700">Səbətiniz boşdur...</p>
-        <p className="text-[14px] text-gray-400">Ana səhifəyə yönləndirilirsiniz.</p>
+        <p className="text-[20px] font-serif italic text-gray-700">Your basket is empty...</p>
+        <p className="text-[14px] text-gray-400">You are redirected to the home page.</p>
       </div>
     );
   }
@@ -48,7 +48,7 @@ function Checkout() {
   if (!clientSecret) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-pulse text-[18px] italic text-gray-500">Ödəniş sistemi hazırlanır...</div>
+        <div className="animate-pulse text-[18px] italic text-gray-500">The payment system is being prepared...</div>
       </div>
     );
   }
