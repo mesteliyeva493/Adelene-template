@@ -1,7 +1,7 @@
 import React from 'react'
 import { RouterProvider } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
-import { Provider } from 'react-redux' // Redux-u bura gətiririk
+import { Provider } from 'react-redux' 
 import router from './router/Router.jsx'
 import store from './app/Store.js'
 

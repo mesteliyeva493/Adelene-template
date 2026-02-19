@@ -24,7 +24,7 @@ function CheckoutForm() {
 
   const totalPrice = items.reduce(
     (total, item) => total + item.price * item.quantity,
-    0
+    0,
   );
 
   const formik = useFormik({
@@ -41,7 +41,9 @@ function CheckoutForm() {
     validationSchema: Yup.object({
       firstName: Yup.string().required("First name is required"),
       lastName: Yup.string().required("Last name is required"),
-      email: Yup.string().email("Enter a valid email").required("Email is required"),
+      email: Yup.string()
+        .email("Enter a valid email")
+        .required("Email is required"),
       phone: Yup.string().required("Phone number is required"),
       street: Yup.string().required("Address is required"),
       city: Yup.string().required("City is required"),
@@ -103,7 +105,7 @@ function CheckoutForm() {
         toast.dismiss(loadingToast);
         console.error("Process error:", err);
         toast.error(
-          "Payment was received, but the order could not be saved. Please contact support."
+          "Payment was received, but the order could not be saved. Please contact support.",
         );
       } finally {
         setIsProcessing(false);
@@ -113,12 +115,15 @@ function CheckoutForm() {
 
   return (
     <>
-         <Helmet>
-              <title> Checkout</title>
-            </Helmet>
+      <Helmet>
+        <title> Checkout</title>
+      </Helmet>
       <section>
         <div className="max-w-[1200px] mx-auto pt-[34px] pb-[30px] font-sans">
-          <div style={{ maxWidth: "1200px" }} className="mx-auto px-[24px] py-[64px]">
+          <div
+            style={{ maxWidth: "1200px" }}
+            className="mx-auto px-[24px] py-[64px]"
+          >
             <form
               onSubmit={formik.handleSubmit}
               className="flex flex-col lg:flex-row gap-[64px]"
@@ -188,7 +193,11 @@ function CheckoutForm() {
                 />
 
                 <div
-                  style={{ marginTop: "40px", padding: "24px", borderRadius: "30px" }}
+                  style={{
+                    marginTop: "40px",
+                    padding: "24px",
+                    borderRadius: "30px",
+                  }}
                   className="bg-white border border-gray-100 shadow-sm"
                 >
                   <h4 className="text-[12px] font-bold mb-[16px] text-gray-400 uppercase tracking-[2px]">

@@ -18,16 +18,14 @@ function Fhc() {
       subtitle: "Hand Crafted",
       linkText: "About our leather",
       img: leather,
-            path: "/ourCraft",
-
+      path: "/ourCraft",
     },
     {
       title: "USA",
       subtitle: "Created in the",
       linkText: "Learn our process",
       img: proces,
-                  path: "/ourCraft",
-
+      path: "/ourCraft",
     },
   ];
 

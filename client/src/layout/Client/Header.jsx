@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 function Header({ onCartClick }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Mobil menyu state
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); 
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -79,7 +79,7 @@ function Header({ onCartClick }) {
               >
                 <CiSearch className="text-2xl text-[#BB4B2A]" />
                 <span className="hidden md:block text-[10px] tracking-[3px] uppercase text-[#BB4B2A]">Search</span>
-              </motion.div>
+              </motion.div> 
             </div>
 
             <NavLink to="/" className="flex-1 flex justify-center">
