@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import toast from "react-hot-toast"; 
 import { addToCart } from "../../features/Cart/cartSlice";
 
+const MATERIAL_TAGS = ["Leather", "Vegan"];
+
 function ShopAll () {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -16,7 +18,8 @@ function ShopAll () {
   const [tags, setTags] = useState([]);
 
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedTagId, setSelectedTagId] = useState("All");
+  const [selectedColorId, setSelectedColorId] = useState(null);
+  const [selectedMaterialId, setSelectedMaterialId] = useState(null);
   const [priceLimit, setPriceLimit] = useState(2000);
   const [sortBy, setSortBy] = useState("Newest");
   const [visibleCount, setVisibleCount] = useState(6);
@@ -30,7 +33,6 @@ function ShopAll () {
 
   useEffect(() => {
     if (categoryFromUrl) {
-
       setSelectedCategory(categoryFromUrl);
     }
   }, [categoryFromUrl]);
@@ -53,6 +55,8 @@ function ShopAll () {
     fetchData();
   }, []);
 
+  const colorTags = tags.filter(t => !MATERIAL_TAGS.includes(t.title));
+  const materialTags = tags.filter(t => MATERIAL_TAGS.includes(t.title));
 
   const handleAddToCart = (e, product) => {
     if (e) e.stopPropagation();
@@ -82,13 +86,15 @@ function ShopAll () {
       const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase());
       const categoryMatch = selectedCategory === "All" || 
         item.categoryId?.title?.toLowerCase() === selectedCategory?.toLowerCase();
-      
       const priceMatch = Number(item.price) <= priceLimit;
-      const tagMatch = selectedTagId === "All" || (item.tags && item.tags.some(t => {
-        const tId = typeof t === 'object' ? t._id : t;
-        return tId === selectedTagId;
-      }));
-      return matchesSearch && categoryMatch && priceMatch && tagMatch;
+
+      const getTagIds = (product) => product.tags?.map(t => typeof t === 'object' ? t._id : t) || [];
+      const productTagIds = getTagIds(item);
+
+      const colorMatch = !selectedColorId || productTagIds.includes(selectedColorId);
+      const materialMatch = !selectedMaterialId || productTagIds.includes(selectedMaterialId);
+
+      return matchesSearch && categoryMatch && priceMatch && colorMatch && materialMatch;
     })
     .sort((a, b) => {
       if (sortBy === "LowToHigh") return a.price - b.price;
@@ -115,6 +121,8 @@ function ShopAll () {
           <button onClick={() => {
             navigate("/shopAll");
             setSelectedCategory("All");
+            setSelectedColorId(null);
+            setSelectedMaterialId(null);
           }} className="text-[10px] uppercase underline text-gray-400">Clear All</button>
         </div>
       )}
@@ -133,12 +141,45 @@ function ShopAll () {
                 ))}
               </ul>
             </div>
+
             <div>
               <h3 className="text-[12px] font-bold uppercase tracking-[2px] mb-[16px] text-gray-900">Color</h3>
               <div className="flex flex-wrap gap-[12px]">
-                <button onClick={() => setSelectedTagId("All")} className={`w-[32px] h-[32px] rounded-full border text-[9px] ${selectedTagId === "All" ? "border-black" : "border-gray-200"}`}>ALL</button>
-                {tags.map(tag => (
-                  <button key={tag._id} onClick={() => setSelectedTagId(tag._id)} className={`w-[32px] h-[32px] rounded-full border-[2px] ${selectedTagId === tag._id ? "border-black" : "border-transparent"}`} style={{ backgroundColor: tag.title.toLowerCase() }} />
+                <button 
+                  onClick={() => setSelectedColorId(null)} 
+                  className={`w-[32px] h-[32px] rounded-full border text-[9px] ${!selectedColorId ? "border-black" : "border-gray-200"}`}
+                >
+                  ALL
+                </button>
+                {colorTags.map(tag => (
+                  <button 
+                    key={tag._id} 
+                    onClick={() => setSelectedColorId(prev => prev === tag._id ? null : tag._id)}
+                    title={tag.title}
+                    className={`w-[32px] h-[32px] rounded-full border-[2px] transition-all ${selectedColorId === tag._id ? "border-black scale-110" : "border-transparent"}`} 
+                    style={{ backgroundColor: tag.title.toLowerCase() }} 
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-[12px] font-bold uppercase tracking-[2px] mb-[16px] text-gray-900">Material</h3>
+              <div className="flex flex-wrap gap-[12px]">
+                <button 
+                  onClick={() => setSelectedMaterialId(null)} 
+                  className={`px-[16px] h-[32px] rounded-full border text-[10px] uppercase tracking-[1px] ${!selectedMaterialId ? "border-black text-black" : "border-gray-200 text-gray-400"}`}
+                >
+                  All
+                </button>
+                {materialTags.map(tag => (
+                  <button 
+                    key={tag._id} 
+                    onClick={() => setSelectedMaterialId(prev => prev === tag._id ? null : tag._id)}
+                    className={`px-[16px] h-[32px] rounded-full border-[2px] text-[10px] uppercase tracking-[1px] transition-all ${selectedMaterialId === tag._id ? "border-black text-black font-bold" : "border-gray-200 text-gray-400"}`}
+                  >
+                    {tag.title}
+                  </button>
                 ))}
               </div>
             </div>
