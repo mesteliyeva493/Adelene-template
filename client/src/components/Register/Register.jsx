@@ -36,8 +36,7 @@ const Register = () => {
         .matches(emailRegex, "Invalid email")
         .required("Required"),
       password: Yup.string()
-        .matches(passwordRegex, "Must be stronger")
-        .required("Required"),
+.matches(passwordRegex, "Password must contain 8 characters, one uppercase, one lowercase, one number and one special case character")        .required("Required"),
       confirmPassword: Yup.string()
         .oneOf([Yup.ref("password"), null], "No match")
         .required("Required"),
@@ -169,15 +168,26 @@ const Register = () => {
                       </span>
                     )}
                 </div>
-
-                <motion.button
-                  whileHover={{ scale: 1.01, backgroundColor: "#904F2E" }}
-                  whileTap={{ scale: 0.98 }}
-                  type="submit"
-                  className="w-full bg-[#BB4B2A] text-white py-4 mt-6 text-[11px] uppercase tracking-[4px] font-medium transition-all duration-300 shadow-sm"
-                >
-                  Complete Registration
-                </motion.button>
+<motion.button
+  disabled={formik.isSubmitting}
+  whileHover={!formik.isSubmitting ? { scale: 1.01, backgroundColor: "#904F2E" } : {}}
+  whileTap={!formik.isSubmitting ? { scale: 0.98 } : {}}
+  type="submit"
+  className={`w-full py-4 mt-6 text-[11px] uppercase tracking-[4px] font-medium transition-all duration-300 shadow-sm text-white ${
+    formik.isSubmitting 
+      ? "bg-gray-400 cursor-not-allowed" 
+      : "bg-[#BB4B2A]"
+  }`}
+>
+  {formik.isSubmitting ? (
+    <span className="flex items-center justify-center gap-2">
+      <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+      Processing...
+    </span>
+  ) : (
+    "Complete Registration"
+  )}
+</motion.button>
 
                 <div className="text-center">
                   <p className="text-[10px] text-gray-500 tracking-[1px] uppercase">
